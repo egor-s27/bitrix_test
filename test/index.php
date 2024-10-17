@@ -12,8 +12,7 @@ if (CModule::IncludeModule("iblock")) {
     $res = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize" => 50), $arSelect);
     $arBlock = GetIBlock("3");
 
-    while ($ob = $res->Fetch()) {
-        $arItem = $ob->GetFields();
+    while ($arItem = $res->Fetch()) {
         $arResult[$arItem["ID"]] = $arItem["NAME"];
     }
 }

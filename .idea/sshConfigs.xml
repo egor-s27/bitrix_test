@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="dev9.bpmsoft.ru" id="2db76e6a-4acc-4a0d-a383-b45c44ee4d4a" port="22" customName="dev9" nameFormat="CUSTOM" username="bitrix" useOpenSSHConfig="true">
+        <option name="customName" value="dev9" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>
