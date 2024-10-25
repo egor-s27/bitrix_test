@@ -9,17 +9,23 @@ class CIblocList extends CBitrixComponent
     public function executeComponent()
     {
         if (Loader::includeModule("iblock")) {
-            $el = \Bitrix\Iblock\Elements\ElementRewTable::getList([
+            $result["PARAMS"] = $this->arParams;
+
+            $arIBlock = \Bitrix\Iblock\IblockTable::getList([
+                'filter' => ['ID' => $result["PARAMS"]["IBLOCK_ID"], 'ACTIVE' => 'Y',],
+                'select' => ["NAME", "API_CODE"],
+            ])->fetchAll();
+
+            $api = ucfirst($arIBlock[0]["API_CODE"]);
+            $str = '\Bitrix\Iblock\Elements\Element'.$api.'Table';
+
+            $el = $str::getList([
                 'filter' => ['=ACTIVE' => 'Y'],
                 'select' => ['ID', 'NAME'],
             ])->fetchAll();
 
-            $arIBlock = \Bitrix\Iblock\IblockTable::getList([
-                'filter' => ['ID' => 5, 'ACTIVE' => 'Y',],
-                'select' => ["NAME"],
-            ])->fetchAll();
             $result["ELEMENT"] = $el;
-            $result["IBLOCK_NAME"] = $arIBlock[0]["NAME"];
+            $result["IBLOCK"] = $arIBlock[0]["NAME"];
             $this->arResult = $result; // Присваивание значения arResult
             $this->includeComponentTemplate(); //Подключение шаблона !ОБЯЗАТЕЛЬНО!
         }

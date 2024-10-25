@@ -4,7 +4,7 @@
 
 <!--<pre>--><?//print_r($arResult)?><!--</pre>-->
 
-<?php $APPLICATION->SetTitle($arResult["IBLOCK_NAME"]);?>
+<?php //$APPLICATION->SetTitle($arResult["IBLOCK_NAME"]);?>
 <ul>
     <? foreach ($arResult["ELEMENT"] as $arItem): ?>
         <li><?= $arItem["ID"] ?> - <?= $arItem["NAME"] ?></li>
