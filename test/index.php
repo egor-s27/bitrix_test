@@ -14,7 +14,6 @@ if (\Bitrix\Main\Loader::includeModule("iblock")) {
     ])->fetchAll();
     $APPLICATION->SetTitle($arIBlock[0]["NAME"]);
 } ?>
-<!--    <pre>--><?// print_r($arIBlock) ?><!--</pre>;-->
     <ul>
         <? foreach ($arResult as $arItem): ?>
             <li><?= $arItem["ID"] ?> - <?= $arItem["NAME"] ?></li>
