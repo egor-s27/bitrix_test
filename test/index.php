@@ -1,27 +1,24 @@
-<?php
+<?
 require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/header.php");
-$APPLICATION->SetTitle("Главная");
-?>
-    <pre>
-<?php
-if (CModule::IncludeModule("iblock")) {
-    //здесь можно использовать функции и классы модуля
 
-    $arSelect = array("ID", "NAME");//IBLOCK_ID и ID обязательно должны быть указаны, см. описание arSelectFields выше
-    $arFilter = array("IBLOCK_ID" => 5, "ACTIVE_DATE" => "Y", "ACTIVE" => "Y");
-    $res = CIBlockElement::GetList(array(), $arFilter, false, array("nPageSize" => 50), $arSelect);
-    $arBlock = GetIBlock("3");
+if (\Bitrix\Main\Loader::includeModule("iblock")) {
 
-    while ($arItem = $res->Fetch()) {
-        $arResult[$arItem["ID"]] = $arItem["NAME"];
-    }
-}
-?>
-    </pre>
-    <h1><?= $arBlock["NAME"] ?></h1>
+    $arResult = \Bitrix\Iblock\Elements\ElementRewTable::getList([
+        'filter' => ['=ACTIVE' => 'Y'],
+        'select' => ['ID', 'NAME'],
+    ])->fetchAll();
+
+    $arIBlock = \Bitrix\Iblock\IblockTable::getList([
+        'filter' => ['ID' => 5, 'ACTIVE' => 'Y',],
+        'select' => ["NAME"],
+    ])->fetchAll();
+    $APPLICATION->SetTitle($arIBlock[0]["NAME"]);
+} ?>
+<!--    <pre>--><?// print_r($arIBlock) ?><!--</pre>;-->
     <ul>
-        <?php foreach ($arResult as $id => $arElement): ?>
-            <li><?= $id ?> - <?= $arElement ?></li>
-        <?php endforeach; ?>
+        <? foreach ($arResult as $arItem): ?>
+            <li><?= $arItem["ID"] ?> - <?= $arItem["NAME"] ?></li>
+        <? endforeach; ?>
     </ul>
-<?php require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
+
+<? require($_SERVER["DOCUMENT_ROOT"] . "/bitrix/footer.php"); ?>
