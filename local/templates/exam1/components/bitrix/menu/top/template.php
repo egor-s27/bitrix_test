@@ -1,68 +1,66 @@
-<?if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+<?php
 
+if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED !== true)
+    die();
+
+$this->setFrameMode(true);
+
+if (empty($arResult["ALL_ITEMS"]))
+    return;
+?>
 <nav class="nav">
     <div class="inner-wrap">
         <div class="menu-block popup-wrap">
             <a href="" class="btn-menu btn-toggle"></a>
             <div class="menu popup-block">
-                <?if (!empty($arResult)):?>
-                    <ul class="left-menu">
-                        <li class="main-page"><a href="https://dev9.bpmsoft.ru/">Главная</a>
+                <ul class="">
+                    <li class="main-page"><a href="/"><?=GetMessage("MAIN")?></a>
+                    <? foreach ($arResult["MENU_STRUCTURE"] as $itemID => $arColumns):
+                    if($arResult["ALL_ITEMS"][$itemID]["PERMISSION"] == "D") continue;?>
+                         <!-- first level-->
+                        <li>
+                            <a href="<?= $arResult["ALL_ITEMS"][$itemID]["LINK"] ?>">
+                                <?= $arResult["ALL_ITEMS"][$itemID]["TEXT"] ?>
+                            </a>
+                            <? foreach ($arColumns as $key => $arRow): ?>
+                                <ul>
+                                    <?
+                                    $text_menu_top = trim($APPLICATION->GetDirProperty("text_menu_top", $arResult["ALL_ITEMS"][$itemID]["LINK"]));
+                                    if ($text_menu_top):
+                                    ?>
+                                    <div class="menu-text"><?=$text_menu_top?></div>
+                                    <?endif;?>
+                                    <? foreach ($arRow as $itemIdLevel_2 => $arLevel_3):
+                                        if($arResult["ALL_ITEMS"][$itemIdLevel_2]["PERMISSION"] == "D") continue;
+                                        ?>  <!-- second level-->
+                                        <li>
+                                            <a href="<?= $arResult["ALL_ITEMS"][$itemIdLevel_2]["LINK"] ?>">
+                                                <?= $arResult["ALL_ITEMS"][$itemIdLevel_2]["TEXT"] ?>
+                                            </a>
+                                            <? if (is_array($arLevel_3) && !empty($arLevel_3)): ?>
+                                                <ul>
+                                                    <?
+                                                    $text_menu_top = trim($APPLICATION->GetDirProperty("text_menu_top", $arResult["ALL_ITEMS"][$itemIdLevel_2]["LINK"]));
+                                                    if ($text_menu_top):
+                                                    ?>
+                                                        <div class="menu-text"><?=$text_menu_top?></div>
+                                                    <?endif;?>
+                                                    <? foreach ($arLevel_3 as $itemIdLevel_3): ?>    <!-- third level-->
+                                                        <li>
+                                                            <a href="<?= $arResult["ALL_ITEMS"][$itemIdLevel_3]["LINK"] ?>">
+                                                                <?= $arResult["ALL_ITEMS"][$itemIdLevel_3]["TEXT"] ?>
+                                                            </a>
+                                                        </li>
+                                                    <? endforeach; ?>
+                                                </ul>
+                                            <? endif ?>
+                                        </li>
+                                    <? endforeach; ?>
+                                </ul>
+                            <? endforeach; ?>
                         </li>
-                        <?
-                        $previousLevel = 0;
-                        foreach($arResult as $arItem):?>
-
-                        <?if ($previousLevel && $arItem["DEPTH_LEVEL"] < $previousLevel):?>
-                            <?=str_repeat("</ul></li>", ($previousLevel - $arItem["DEPTH_LEVEL"]));?>
-                        <?endif?>
-
-                        <?if ($arItem["IS_PARENT"]):?>
-
-                        <?if ($arItem["DEPTH_LEVEL"] == 1):?>
-                        <li><a href="<?=$arItem["LINK"]?>" class="<?if ($arItem["SELECTED"]):?>root-item-selected<?else:?>root-item<?endif?>"><?=$arItem["TEXT"]?></a>
-                            <ul>
-                                <?else:?>
-                                <li<?if ($arItem["SELECTED"]):?> class="item-selected"<?endif?>><a href="<?=$arItem["LINK"]?>" class="parent"><?=$arItem["TEXT"]?></a>
-                                    <ul>
-                                        <?endif?>
-
-                                        <?else:?>
-
-                                            <?if ($arItem["PERMISSION"] > "D"):?>
-
-                                                <?if ($arItem["DEPTH_LEVEL"] == 1):?>
-                                                    <li><a href="<?=$arItem["LINK"]?>" class="<?if ($arItem["SELECTED"]):?>root-item-selected<?else:?>root-item<?endif?>"><?=$arItem["TEXT"]?></a></li>
-                                                <?else:?>
-                                                    <li<?if ($arItem["SELECTED"]):?> class="item-selected"<?endif?>><a href="<?=$arItem["LINK"]?>"><?=$arItem["TEXT"]?></a></li>
-                                                <?endif?>
-
-                                            <?else:?>
-
-                                                <?if ($arItem["DEPTH_LEVEL"] == 1):?>
-                                                    <li><a href="" class="<?if ($arItem["SELECTED"]):?>root-item-selected<?else:?>root-item<?endif?>" title="<?=GetMessage("MENU_ITEM_ACCESS_DENIED")?>"><?=$arItem["TEXT"]?></a></li>
-                                                <?else:?>
-                                                    <li><a href="" class="denied" title="<?=GetMessage("MENU_ITEM_ACCESS_DENIED")?>"><?=$arItem["TEXT"]?></a></li>
-                                                <?endif?>
-
-                                            <?endif?>
-
-                                        <?endif?>
-
-                                        <?$previousLevel = $arItem["DEPTH_LEVEL"];?>
-
-                                        <?endforeach?>
-
-                                        <?if ($previousLevel > 1)://close last item tags?>
-                                            <?=str_repeat("</ul></li>", ($previousLevel-1) );?>
-                                        <?endif?>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-
-                    </ul>
-                <?endif?>
+                    <? endforeach; ?>
+                </ul>
             </div>
         </div>
     </div>

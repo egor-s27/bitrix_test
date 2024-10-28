@@ -1,3 +1,3 @@
 <?
-$MESS ['CONTACT_INFORMATION'] = "Контактная информация";
+$MESS ['CONTACT_INFO'] = "Контактная информация";
 ?>
